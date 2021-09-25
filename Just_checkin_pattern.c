@@ -1,5 +1,5 @@
 #include<stdio.h>
-int main()
+void main()
 {
 int i=0,j=0;
 {
@@ -15,5 +15,5 @@ int i=0,j=0;
 
 }
 
-return 0;
+getch();
 }
