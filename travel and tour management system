@@ -1,0 +1,1325 @@
+
+#include <conio.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <graphics.h>
+#include <dos.h>
+
+// Defining Structure
+   struct mynode {
+    char name[20];
+    char gender[6];
+    int age;
+    int k;
+    char destination[20];
+    char date[20];
+    long int b;
+    long int c;
+    int id;
+
+} test,stu;
+struct login
+ {
+    char fname[30];
+    char username[30];
+    char password[20];
+    char email[40];
+    char address[30];
+    long int phonenum;
+
+}l;
+
+void login (); //Function for login purpose
+void registration (); //FUnction for sign up purpose
+void forget();        //function for retaining id password when user forget that.
+void menu();  //function for continuing two function details and receipt
+void heading(); //function for presenting main heading wherever necessary
+void details(); //functon for taking necessary details of traveller's
+void nepal();   //function for viewing list of tour package available in Nepal
+void receipt(); //function for displaying receipt of the traveller's selected package
+void pokhara();  //function for displaying necessary information of pokhara
+void kathmandu(); //function for displaying necessary infotmation of kathmandu
+void solukhumbu(); //function for displaying necessary information of solukhumbu
+void mustang(); //function for displaying necessary information of mustang
+void chitwan(); //function for displaying necessary information of chitwan
+void lumbini(); //function for displaying necessary information of lumbini
+void placeinfo();//function for displaying all the places necessary information to make traveller's make best choice
+void aboutus(); //function for displaying all the related information of our company
+void terms(); //function for displaying all the terms and condition which is really very necessary to be followed
+void login ();  //function for user login
+void registration ();  //function for user signup
+void viewreceipt();    //function for searching traveller's details
+void mainmenu();      //function for viewing main menu where all the important functions are listed
+
+// Global variables
+int k=0,mero=0,tero=0,travelnum=0;
+long int amount=0,amounts=0;
+char type[60], place[30], date[20],ch;
+char username[20];
+char userpwd[8]; // for storing password
+int i=0,count=0,j=0;
+FILE *fp,*fq;
+
+  /* clears/creates snow based on the given color */
+  void whitePixel(int color)
+  {
+	int i, j = 0, x, y;
+	setlinestyle(SOLID_LINE, 1, 3);
+	setcolor(color);
+	for (i = 50; i < 600; i = i + 50) {
+		x = i;
+		y = 50 + j;
+		/* put pixel at the given position */
+		putpixel(x, y, color);
+
+		/* moving the snow(pixels) towards moutain */
+		if (i % 100 == 0) {
+			y = y + 90;
+			x = x + 35;
+			j = 20;
+		}  else {
+			y = y +  130;
+			x = x + 25;
+			if (i > 450) {
+				j = 160;
+			} else {
+				j = 30;
+			}
+		}
+
+		/* put pixel at the given position */
+		putpixel(x, y, color);
+	}
+	return;
+  }
+
+  void snowFall(int color) {
+	int i, j, x, y;
+
+	setlinestyle(SOLID_LINE, 1, 3);
+	setcolor(color);
+
+	for (i = 25; i < 600; i = i + 25) {
+		x = i;
+		y = 100 + j;
+		putpixel(x, y, color);
+
+		if (i % 100 == 0) {
+			y = y + 90;
+			x = x + 35;
+			j = 20;
+		}  else {
+			y = y +  130;
+			x = x + 25;
+			j = 30;
+		}
+		putpixel(x, y, color);
+	}
+	return;
+  }
+
+  void main() {
+	/* request auto detection */
+	int gdriver = DETECT, gmode, err,option;
+	int i = 0, fq, amp;
+	double x, y;
+
+	/* initialize graphic mode */
+	initgraph(&gdriver, &gmode, "C:/TURBOC3/BGI");
+	err = graphresult();
+
+	if (err != grOk) {
+		/* error occurred */
+		printf("Graphics Error: %s\n",
+		grapherrormsg(err));
+	}
+
+	x = 0;
+	fq = 2;
+	amp = 100;
+	setcolor(WHITE);
+
+	/* drawing the moutain using sine wave*/
+	while (x <= getmaxx()) {
+		y = amp * sin((3.14 * fq * x) / 180);
+		y = y + getmaxy() / 2 + 100;
+		putpixel(x, y, 15);
+		line(x, y, x, y - 12);
+		line(x, y, x, y + 12);
+		delay(5);
+		x = x + 1;
+	}
+
+	/* color the mountain with white(snow) */
+	setfillstyle(SOLID_FILL, WHITE);
+	floodfill(2, getmaxy(), WHITE);
+
+	/* draw the moon */
+	x = getmaxx() - 50;
+	y = 40;
+	setcolor(WHITE);
+	setfillstyle(SOLID_FILL, WHITE);
+	circle(x, y, 35);
+	floodfill(x, y, WHITE);
+
+	/* drawing birds */
+	setlinestyle(SOLID_LINE, 1, 3);
+	setcolor(WHITE);
+	arc(50, 50, 0, 160, 10);
+	arc(70, 50, 20, 180, 10);
+	arc(150, 100, 0, 150, 10);
+	arc(170, 100, 10, 180, 10);
+
+	/* snowfall */
+	for (i = 0; i < 100; i++)
+	{
+		settextstyle(2,0,9);
+		outtextxy(140,150,"Travel is food for the soul");
+		whitePixel(WHITE);
+		snowFall(BLACK);
+		delay(10);
+		whitePixel(BLACK);
+		snowFall(WHITE);
+		delay(10);
+	}
+	settextstyle(1,0,1);
+	outtextxy(100,0,"Please Enter Any Key To Enter The Home Page");
+
+	whitePixel(WHITE);
+	getch();
+	 /* deallocate memory allocated for graphic screen */
+	closegraph();
+	    mainmenu();
+}
+
+ void mainmenu()
+ {
+    int option;
+    system("cls");
+    heading();
+    printf("\n\t\t\t1) SIGN UP\n\t\t\t2) Login\n\t\t\t3) Forgot Password\n\t\t\t4) Places Information\n\t\t\t5) About US\n\t\t\t6) Terms And Condition\n\t\t\t7) Search Traveller's Detail\n\t\t\t8) EXIT ");
+
+    printf("\n\t\t\tEnter Choice(1-8)");
+    label:
+    scanf("%d",&option);
+    if(option == 1)
+	{
+	    system("CLS");
+	    registration();
+	}
+
+    else if(option == 2)
+	{
+	    system("CLS");
+	    login();
+	}
+	else if(option== 3)
+	{
+	     system("CLS");
+	     forget();
+	}
+
+	else if(option == 4)
+	{
+	  system("CLS");
+	  placeinfo();
+	}
+	else if(option == 5)
+	{
+	   system("CLS");
+	   aboutus();
+	}
+	else if(option== 6)
+	{
+	   system("CLS");
+	   terms();
+	}
+
+	else if(option==7)
+	{
+	    system("cls");
+	    viewreceipt();
+	}
+	else if(option==8)
+	{
+	    system("cls");
+	    exit(0);
+	}
+
+	else
+	{
+	   printf("\n\n\t\t\tPlease enter the given choice from(1-8)");
+	   goto label;
+	}
+
+	menu();
+	getch();
+ }
+      void menu()
+	{
+	   printf("\t\t Nepal Tour Packages\n");
+	   nepal();
+
+	   // Calling details() function
+	   details();
+
+	   // Calling receipt() function
+	   receipt();
+	}
+
+
+// Function To Take Package
+// Choice From Nepal
+ void nepal()
+ {
+    int a;
+    system("cls"); //clear the screen
+    heading();
+    strcpy(type, "Nepal Tour Package");
+    printf("\t\t\tNEPAL TOUR PACKAGE\n\n");
+
+    printf("\t\t1) Pokhara Tour Packages\n");
+    printf("\t\t2) Mustang Tour Packages\n");
+    printf("\t\t3) Lumbini Tour Packages\n");
+    printf("\t\t4) Chitwan Tour Packages\n");
+    printf("\t\t5) Kathmandu Tour Packages\n");
+    printf("\t\t6) Solukhumbu Tour Packages\n");
+    printf("\t\t7) Return Back to Main Menu\n");
+    flag:
+    printf("\t\tEnter Choice: ");
+    scanf("%d", &a);
+
+    if (a == 1) {
+	strcpy(place, "Pokhara Tour");
+	system("CLS");
+	pokhara();
+		 }
+    else if (a == 2) {
+	strcpy(place, "Mustang Tour");
+	system("cls");
+	mustang();
+		     }
+    else if (a == 3) {
+	strcpy(place, "Lumbini Tour");
+	system("cls");
+	lumbini();
+		     }
+    else if (a == 4) {
+	strcpy(place, "Chitwan Tour");
+	system("cls");
+	chitwan();
+		     }
+
+    else if (a == 5) {
+	strcpy(place, "Kathmandu Tour");
+	system("cls");
+	kathmandu();
+		    }
+
+    else if (a == 6) {
+	strcpy(place, "Solukhumbu Tour");
+	system("cls");
+	solukhumbu();
+		     }
+    else if (a==7)
+    {
+      mainmenu();
+    }
+
+    else
+    {
+	printf("Enter Correct Choice...");
+	goto flag;
+    }
+
+ }
+// Function To Take Passenger Details
+void details()
+{
+ //    int i=0;
+  FILE *fp;
+  char another='y';
+  //char ch[20];
+  system("cls");
+  heading();
+
+  fp=fopen("sarara.txt","a+");
+	 if(fp==NULL)
+		{
+		printf("file not found");
+		exit(0);
+		}
+
+	  while(another=='y'|| another=='Y')
+	  {
+		count++;
+		printf("\n\t\tEnter name of traveller:");
+		gets(stu.name);
+		fflush(stdin);
+
+		  printf("\t\tEnter id of traveller:");
+		  scanf("%d",&stu.id);
+		  fflush(stdin);
+
+		  printf("\t\tEnter gender of traveller:");
+		  gets(stu.gender);
+		  fflush(stdin);
+
+		  printf("\t\tEnter age of traveller:");
+		  scanf("%d",&stu.age);
+		  fflush(stdin);
+
+		  printf("\t\tEnter checkin date (y/m/d):");
+		  scanf("%s",stu.date);
+		  fflush(stdin);
+
+		  printf("\t\tEnter Destination:");
+		  gets(stu.destination);
+		  fflush(stdin);
+		  fwrite(&stu,sizeof(stu),1,fp);
+		 printf("\n\t\tAdd another record(y/n)-: ");
+		  another=getche();
+
+			  }
+			  fclose(fp);
+	     }
+
+// Function For Printing Receipt
+ void viewreceipt()
+ {
+    FILE *fq;
+    int x=0,id;
+   long int d,e;
+    system("cls");
+    heading();
+    fq=fopen("sarara.txt","r+");
+	 printf("\t\tEnter id to search your receipt");
+	 scanf("%d",&id);
+	 fflush(stdin);
+	 printf("\n\t\t\t--------YOUR DETAILS--------");
+	  while(fread(&test,sizeof(test),1,fq)>0)
+	  {
+	      if(id==test.id)
+	      {
+	      x=1;
+	      printf("\n\t\t\t Traveller's Name:");
+	      puts(test.name);
+	      printf("\t\t\t Traveller's Id: %d\n",test.id);
+	      printf("\t\t\t Traveller's Gender:");
+	      puts(test.gender);
+	      printf("\t\t\t Traveller's age: %d\n",test.age);
+	      printf("\t\t\t Date:");
+	      puts(test.date);
+	      printf("\t\t\t Selected Type: NEPAL TOUR PACKAGE\n");
+	      printf("\t\t\t Destination: ");
+	      puts(test.destination);
+	      }
+	 }
+		 if(x!=1)
+		   {
+		   system("cls");
+		   heading();
+		   printf("\n\t\tSorry!! You have not booked any package yet\n");
+		   }
+		   printf("\n\t\t\t---Thank You---");
+		   fclose(fq);
+		   getch();
+		   mainmenu();
+	}
+ void receipt()
+  {
+    int i;
+    long int b=0,c=0;
+
+    system("cls");
+    heading();
+    printf("\n\t\t--- Your Receipt---");
+    printf("\n\t---- Take Screenshot For Further Use----\n");
+	printf("\t\tTraveller Name: ");
+	puts(stu.name);
+	printf("\t\t%s's Gender: ",stu.name);
+	puts(stu.gender);
+	printf("\t\t%s's Age: %d\n\n",stu.name,stu.age);
+	printf("\t\tDate: ");
+	puts(stu.date);
+	printf("\t\tNumber of traveller's: %d\n",count);
+
+
+    printf("\t\tSelected Type: ");
+    puts(type);
+    printf("\n\t\tPackage: ");
+    puts(place);
+
+
+    b = amount*count;
+    c = amounts*count;
+   if(mero==1)
+    {
+    printf("\t\tTotal Amount of Basic Package: %ld", b);
+     }
+    else if(mero==2){
+    printf("\t\tTotal Amount of Advance Package: %ld",c);
+     }
+   else{
+     }
+    printf("\n\t\t---Thank You Booking Succesful---");
+	   getch();
+	   mainmenu();
+
+
+}
+void heading()
+{
+    printf("_______________________________________________________________________________");
+    printf("\t\t\t----TRAVEL AND TOUR MANAGEMENT SYSTEM----\n\n");
+    printf("\t---VACCINATION CERTIFICATE "
+	   "IS NECESSARY FOR TRAVELLING PURPOSE---\n");
+    printf("_______________________________________________________________________________\n");
+}
+void login ()
+{
+    char username[30],password[20];
+    int success=0;
+    FILE *log;
+    log = fopen("login.txt","r");
+    if (log == NULL)
+    {
+	fputs("Error at opening File!", stderr);
+	exit(1);
+    }
+    printf("\n\tPlease Enter your login credentials below\n\n");
+    flag:
+	fflush(stdin);
+		    printf("\tEnter Username:  ");
+    gets(username);
+    fflush(stdin);
+    printf("\n\tEnter Password: ");
+    for(i = 0;i < 100;i++)
+{
+ch = getch();
+if(ch == 13)
+break;
+if(ch==8)
+continue;
+password[i]=ch;
+ch='*';
+printf("%c",ch);
+
+}
+password[i]='\0';
+   while(fread(&l,sizeof(l),1,log))
+	{
+	if(strcmp(username,l.username)==0 && strcmp(password,l.password)==0)
+	  {
+	   success=1;
+	   }
+	}
+	 if(success==1)
+	  {
+	    printf("\n\n\tLogin Successfully");
+	    getch();
+	    }
+	    else{
+	    printf("\n\n\tIncorrect User ID and User Password");
+	    getch();
+	    mainmenu();
+	    }
+
+    fclose(log);
+
+    getch();
+}
+void registration()
+{
+    char firstname[15];
+    FILE *log,*ptr;
+
+    log=fopen("login.txt","a+");
+    if (log == NULL)
+    {
+	fputs("Error at opening File!", stderr);
+	exit(1);
+    }
+
+   printf("\n\tWelcome!! You need to enter some details for registration.\n\n");
+    fflush(stdin);
+    printf("\n\tEnter your Name:  ");
+    gets(l.fname);
+    fflush(stdin);
+
+    printf("\n\tEnter your Address:  ");
+    gets(l.address);
+    fflush(stdin);
+
+    printf("\n\tEnter your Email:  ");
+    gets(l.email);
+    fflush(stdin);
+
+    printf("\n\tEnter your Phone number:  ");
+    scanf("%ld",&l.phonenum);
+    fflush(stdin);
+
+    printf("\n\tThank you.\n\tNow please choose a username and password  for system login.\n");
+
+    printf("\n\tChoose Your Username:  ");
+    gets(l.username);
+    fflush(stdin);
+    printf("\n\tChoose Your Password:  ");
+      for(i = 0;i < 100;i++)
+{
+ch = getch();
+if(ch == 13)
+break;
+if(ch==8)
+continue;
+l.password[i]=ch;
+ch='*';
+printf("%c",ch);
+
+}
+l.password[i]='\0';
+
+    fflush(stdin);
+    fwrite(&l,sizeof(l),1,log);
+    fclose(log);
+    printf("\n\tConfirming details...\n...\n\tWelcome, %s!\n\n",l.fname);
+    printf("\n\tRegistration Successful!\n");
+    printf("Press any key to continue...");
+    system("CLS");
+    login();
+}
+   void forget()
+   {
+     FILE *ft;
+     char userid[30];
+     int scount=0;
+     long int num;
+     ft=fopen("login.txt","r");
+     if(ft==NULL)
+     {
+       printf("FILE not found");
+       exit(0);
+     }
+     heading();
+     printf("\n\tEnter the phone number you Remember:  ");
+     scanf("%ld",&num);
+     fflush(stdin);
+
+    while(fread(&l,sizeof(l),1,ft)==1)
+     {
+      if(num==l.phonenum)
+	 {
+	   scount=1;
+	   break;
+	 }
+
+     }
+     fclose(ft);
+	 if(scount==1)
+	 {
+	   printf("\tCongrats %s!! Your account is found",l.username);
+	   printf("\n\tYour Username is %s",l.username);
+	   printf("\n\tYour password is %s",l.password);
+	   getch();
+	   mainmenu();
+	 }
+
+	 else
+	 {
+	  printf("\tsorry!! Your account not found");
+	  printf("\n\tYou can Create a new account");
+	  getch();
+	  mainmenu();
+	 }
+     }
+void pokhara()
+{
+	int choice;
+	int nam=0,kam=0;
+
+	flag:
+	label:
+	system("cls");
+	heading();
+	printf("\n\n\t\t\t\tPOKHARA TOUR PACKAGE");
+	printf("\n\n\n\t\t\t  1) Basic Package--5d/Rs. 14,999\n\t\t\t  2) Advance Package--7d/Rs. 24,999\n\t\t\t  3) Back to Nepal Tour Package\n");
+	printf("\n\t\t\t Please choose option (1-3)");
+	scanf("%d",&choice);
+	if(choice==1)
+	{
+
+		system("cls");
+		mero=1;
+	      //	amount= 14999;
+		printf("\nThings to do in Pokhara.              \t\tTrip Facts");
+		printf("\n\n1) Visig Davis Fall                 \t\tDuration: 5days");
+		printf("\n2) Go down the Gupteshwor Mahadev Cave\t\tGrade: Easy");
+		printf("\n3) Walk and Cycle around Fewa Lake    \t\tMaximnum elevation:742m");
+		printf("\n4) Boating on Fewa Lake               \t\tRoute:Ktm-Pokhara");
+		printf("\n5) Visit Gurkha Memorial Museum");
+		printf("\n6) Visit Tal Barahi and Bindhabashi Temple");
+		printf("\t\n\nCost included:");
+		printf("\n\n1)Tickets for bus.");
+		printf("\n2)Dinner/Lunch");
+		printf("\n3)Guide service charge");
+		printf("\n4)Vehicle service charge");
+		printf("\n5)Hotel Booking");
+		printf("\n6)Boating Charge");
+		printf("\n7)Cycling Charge");
+		printf("\n8)All Visiting Place Entrance Charges");
+
+
+		printf(" \n1 for confirm other for back:\n");
+		scanf("%d",&nam);
+		if(nam==1)
+		{
+			amount=14999;
+			printf("Confirmed for basic package");
+
+				}
+				else
+				{
+
+		goto flag;
+	}
+
+	}
+	else if(choice==2)
+	{
+		system("cls");
+		mero=2;
+
+	       //	amounts= 24999;
+		printf("\nThings to do in Pokhara.          \t\tTrip Facts");
+		printf("\n\n1) Mardi Mountain Trek          \t\tDuration: 7days");
+		printf("\n2) Ghandruk                       \t\tGrade: Easy");
+		printf("\n3) Bhujung(Largest Gurung Village)\t\tMaximnum elevation:1696m");
+		printf("\n4) Boating on Fewa Lake           \t\tRoute:Ktm-Pokhara");
+		printf("\n5) Visit Gurkha Memorial Museum");
+		printf("\n6) Visit Tal Barahi and Bindhabashi Temple");
+		printf("\n7) Go down to Gupteshwor Mahadev Cave");
+		printf("\n8) Visit Davis Fall");
+		printf("\n9) Paragliding");
+		printf("\n10) Bungee Jumping");
+	printf("\t\n\nCost included:");
+		printf("\n\n1)Tickets for plane.");
+		printf("\n2)Dinner/Lunch");
+		printf("\n3)Hotel Booking");
+		printf("\n4)All Visiting Place Entrance Charges");
+		printf("\n5)Guide Charge");
+		printf("\n6)Cycling Charge");
+		printf("\n7)Boating Charge");
+		printf("\n8)All the payments of Paragliding and Bungee Jumping");
+
+		printf("\n\nPlease Press '1' for confirmation or press any other key to get back ");
+		scanf("%d",&kam);
+		if(kam==1)
+		{
+
+		       amounts = 24999;
+			printf("Confirmed for Advance package");
+				}
+				else
+				{
+
+		goto label;
+	}
+
+	}
+	else if(choice==3)
+	{
+		nepal();
+	}
+	else{
+	printf("Please make choice from(1-3)");
+	goto flag;
+}
+getch();
+}
+void mustang()
+{
+	int choice;
+	int nam,kam;
+
+	flag:
+		label:
+			system("cls");
+			heading();
+	printf("\n\n\t\t\t\tMUSTANG TOUR PACKAGE");
+	printf("\n\n\n\t\t\t 1) Basic Package--7d/Rs. 19,999\n\t\t\t 2) Advance Package--12d/Rs. 34,999\n\t\t\t 3) Back to Nepal Tour Package\n");
+	printf("\n\t\t\t Please choose option (1-3)");
+	scanf("%d",&choice);
+	if(choice==1)
+	{
+		system("cls");
+		mero=1;
+	     //  amount=19999;
+		printf("\nThings to do in Mustang.              \t\tTrip Facts");
+		printf("\n\n1) Visiting Muktinath Temple        \t\tDuration: 7days");
+		printf("\n2) Go Jomsom Muktinath Trek           \t\tGrade: Easy");
+		printf("\n3) Visit Ghar Gompa(Religious Place)  \t\tMaximnum elevation:3931m");
+		printf("\n4) Visit Red Cliffs(Caverns and Cave) \t\tRoute:Ktm-mustang");
+		printf("\n5) Visit Thupchem Gompa");
+		printf("\n6) Visit kali Gandaki");
+	    printf("\n7) Explore Marpha village");
+
+
+
+		printf("\t\n\nCost included:");
+		printf("\n1)Tickets for bus");
+		printf("\n2)Dinner/Lunch");
+		printf("\n3)Hotel Booking");
+		printf("\n4)Vehicle service charge");
+		printf("\n5)Guide service charge");
+		printf("\n4)All Visiting Place Entrance Charges");
+
+
+		printf("\n\nPlease Press '1' for confirmation or press any other key to get back ");
+		scanf("%d",&nam);
+		if(nam==1)
+		{
+
+		      amount = 19999;
+
+			printf("Confirmed for basic package");
+				}
+				else
+				{
+
+		goto flag;
+	}
+
+	}
+	else if(choice==2)
+	{
+	system("cls");
+	mero=2;
+      //	amounts=34999;
+	printf("\nThings to do in Mustang.                  \t\tTrip Facts");
+		printf("\n\n1) Visiting Muktinath Temple        \t\tDuration: 12days");
+		printf("\n2) Go Jomsom Muktinath Trek           \t\tGrade: Easy");
+		printf("\n3) Visit Ghar Gompa(Religious Place)  \t\tMaximnum elevation:3931m");
+		printf("\n4) Visit Red Cliffs(Caverns and Cave) \t\tRoute: Ktm-mustang");
+		printf("\n5) Visit Thupchem Gompa");
+		printf("\n6) Visit Marpha Monastry");
+		printf("\n7) Multiday cultural tour (Upper Mustang)");
+		printf("\n8) Dot Bike Tour");
+		printf("\n9) Kagbeni");
+		printf("\n10) Visit Lomanthang ");
+		printf("\n11) Visit Bara gaon");
+		printf("\n12) Visit China Border");
+
+		printf("\t\n\nCost included:");
+		printf("\n\n1)Tickets for plane.");
+		printf("\n2)Dinner/Lunch");
+		printf("\n3)Hotel Booking");
+		printf("\n4)All Visiting Place Entrance Charges");
+		printf("\n5)Guide Service Charge");
+		printf("\n6)Vehicle Service Charge");
+
+
+		printf("\n\nPlease Press '1' for confirmation or press any other key to get back ");
+		scanf("%d",&kam);
+		if(kam==1)
+		{
+		 amounts = 34999;
+
+			printf("Confirmed for Advance package");
+				}
+				else
+				{
+
+		goto label;
+	}
+
+	}
+	else if(choice==3)
+	{
+	  nepal();
+	}
+	else{
+	printf("\nPlease Enter choose between 1-3");
+		goto flag;
+	}
+	getch();
+}
+
+void lumbini()
+{
+	int choice;
+	int nam,kam;
+
+	flag:
+		label:
+			system("cls");
+			heading();
+	printf("\n\n\t\t\t\tLUMBINI TOUR PACKAGE");
+	printf("\n\n\n\t\t\t 1) Basic Package--3d/Rs. 7,999\n\t\t\t 2) Advance Package--5d/Rs. 14,999\n\t\t\t 3) Back to Nepal Tour Package");
+	printf("\n\t\t\t Please choose option (1-3)");
+	scanf("%d",&choice);
+	if(choice==1)
+	{
+		system("cls");
+		mero=1;
+	     //	amount=7999;
+		printf("\nThings to do in Lumbini.       \t\tTrip Facts");
+		printf("\n\n1) Visit Mayadevi Temple     \t\tDuration: 3days");
+		printf("\n2) Visit World Peace pagoda    \t\tGrade: Easy");
+		printf("\n3) Visit lumbini Monastic site \t\tMaximnum elevation:150m");
+		printf("\n4) Visit Eternal Peace Flame   \t\tRoute:Ktm-lumbini");
+		printf("\n5) Visit Myanmar golden Monastery");
+		printf("\n6) Visit Bodhi tree and Maya devi pond");
+		printf("\n7) Visit Ashka pillar");
+	    printf("\n8) Lumbini musuem ");
+	    printf("\n9) Royal thai Buddhist ");
+
+
+		printf("\t\n\nCost included:");
+		printf("\n\n1)Tickets for Bus.");
+		printf("\n2)Dinner/Lunch");
+		printf("\n3)Hotel Booking");
+		printf("\n4)All Visiting Place Entrance Charges");
+		printf("\n5)Guide Service Charge");
+		printf("\n6)Vehicle Service Charge");
+
+
+		printf("\n\nPlease Press '1' for confirmation or press any other key to get back ");
+		scanf("%d",&nam);
+		if(nam==1)
+		{
+			amount=7999;
+			printf("Confirmed for basic package");
+				}
+				else
+				{
+
+		goto flag;
+	}
+
+	}
+	else if(choice==2)
+	{
+		system("cls");
+	       //	amounts=14999;
+	       mero=2;
+		printf("\nThings to do in Lumbini.      \t\tTrip Facts");
+		printf("\n\n1) Visit Mayadevi Temple    \t\tDuration: 5days");
+		printf("\n2) Visit World Peace pagoda   \t\tGrade: Easy");
+		printf("\n3) Visit lumbini Monastic site\t\tMaximnum elevation:150m");
+		printf("\n4) Visit Eternal Peace Flame  \t\tRoute:Ktm-lumbini");
+		printf("\n5) Visit Myanmar golden Monastery");
+		printf("\n6) Visit Korean Temple(Dae Sung Sakhya)");
+		printf("\n7) Visit Kudan Stupa");
+		printf("\n5) Visit Mother temple of the graduated path to enlightment");
+		printf("\n5) Visit Kapilvastu(historic walking areas)");
+
+
+		printf("\t\n\nCost included:");
+		printf("\n\n1)Tickets for plane.");
+		printf("\n2)Dinner/Lunch");
+		printf("\n3)Hotel Booking");
+		printf("\n4)All Visiting Place Entrance Charges");
+		printf("\n5)Guide Service Charge");
+		printf("\n6)Vehicle Service Charge");
+
+
+		printf("\n\nPlease Press '1' for confirmation or press any other key to get back ");
+		scanf("%d",&kam);
+		if(kam==1)
+		{
+		       amounts=14999;
+			printf("Confirmed for Advance package");
+				}
+				else
+				{
+
+		goto label;
+	}
+
+	}
+	else if(choice==3)
+	{
+		nepal();
+	}
+	else{
+		printf("\nPlease Enter choose from 1-3");
+		goto flag;
+	}
+	getch();
+}
+
+void chitwan()
+{
+	int choice;
+	int nam,kam;
+
+	flag:
+		label:
+			system("cls");
+			heading();
+	printf("\n\n\t\t\t\tCHITWAN TOUR PACKAGE");
+	printf("\n\n\n\t\t\t 1) Basic Package--3d/Rs. 9,999\n\t\t\t 2) Advance Package--4d/Rs. 14,999\n\t\t\t 3) Back to Nepal Tour Package");
+	printf("\n\t\t\t Please choose option (1-3)");
+	scanf("%d",&choice);
+	if(choice==1)
+	{
+	      system("cls");
+	      mero=1;
+	      // amount=9999;
+		printf("\nThings to do in Chitwam.          \t\tTrip Facts");
+		printf("\n\n1) Visit Chitwan National Park   \t\tDuration: 3days");
+		printf("\n2) Visit Crocodile Breeding Centre \t\tGrade: Easy");
+		printf("\n3) Visit Elephant Breeding Centre  \t\tMaximnum elevation:415m");
+		printf("\n4) Visit Bisarzal Tal           \t\tRoute:Ktm-chitwan");
+		printf("\n5) Visit Tharu Cultural Museum and Research Centre");
+	printf("\t\n\nCost included:");
+		printf("\n\n1)Tickets for bus.");
+		printf("\n2)Dinner/Lunch");
+		printf("\n3)Hotel Booking");
+		printf("\n4)All Visiting Place Entrance Charges");
+		printf("\n5)Guide Service Charge");
+		printf("\n6)Vehicle Service Charge");
+
+
+		printf("\n\nPlease Press '1' for confirmation or press any other key to get back ");
+		scanf("%d",&nam);
+		if(nam==1)
+		{
+		       amount=9999;
+			printf("Confirmed for basic package");
+				}
+				else
+				{
+
+		goto flag;
+	}
+
+	}
+	else if(choice==2)
+	{
+		 system("cls");
+		 mero=2;
+	       //	amounts=14999;
+			printf("\nThings to do in Chitwam             \t\tTrip Facts");
+		printf("\n\n1) Visit Chitwan National Park by elephant\tDuration: 4days");
+		printf("\n2) Visit Crocodile Breeding Centre\t\tGrade: Easy");
+		printf("\n3) Visit Elephant Breeding Centre \t\tMaximnum elevation:415m");
+		printf("\n4) Visit Bisarzal Tal                  \t\tRoute:Ktm-bharatpur airport");
+		printf("\n5) Visit Tharu Cultural Museum and Research Centre");
+		printf("\n6) Chitwan Jungle Safari");
+		printf("\n7) Tiger Residency Resort");
+	printf("\t\n\nCost included:");
+		printf("\n\n1)Tickets for plane.");
+		printf("\n2)Dinner/Lunch");
+		printf("\n3)Hotel Booking");
+		printf("\n4)All Visiting Place Entrance Charges");
+		printf("\n5)Guide Service Charge");
+		printf("\n6)Elephant Ride Charge");
+
+
+		printf("\n\nPlease Press '1' for confirmation or press any other key to get back ");
+		scanf("%d",&kam);
+		if(kam==1)
+		{
+		       amounts=14999;
+			printf("Confirmed for Advance package");
+				}
+				else
+				{
+
+		goto label;
+	}
+
+	}
+	else if(choice==3)
+	{
+		nepal();
+		}
+	else{
+		printf("\nPlease Enter choose from 1-3");
+		goto flag;
+	}
+	getch();
+}
+
+void kathmandu()
+{
+	int choice;
+	int nam,kam;
+
+	flag:
+		label:
+			system("cls");
+			heading();
+	printf("\n\n\t\t\t\tKATHMANDU TOUR PACKAGE");
+	printf("\n\n\n\t\t\t 1) Basic Package--5d/Rs. 9,999\n\t\t\t 2) Advance Package--10d/Rs. 11,999\n\t\t\t 3) Back to Nepal Tour Package");
+	printf("\n\t\t\t Please choose option (1-3)");
+	scanf("%d",&choice);
+	if(choice==1)
+	{
+		 system("cls");
+		 mero=1;
+	      //	amount=9999;
+		printf("\nThings to do in Kathmandu.   \t\t\tTrip Facts");
+		printf("\n\n1) Visit Boudhanath Stupa  \t\t\tDuration: 5days");
+		printf("\n2) Visit Swyambhunath Stupa  \t\t\tGrade: Easy");
+		printf("\n3) Visit Pashupatinath Temple\t\t\tMaximnum elevation:1400m");
+		printf("\n4) Visit Krishna Temple      \t\t\tRoute:Ktm-various place");
+		printf("\n5) Visit Kathmandu Durbar Square");
+		printf("\n6) Visit Shivapuri Nagarjun National Park Hiking");
+		printf("\n7) Visit White Gumba  ");
+	    printf("\n8) Visit Basantapur  ");
+	    printf("\n9) Visit Jhor waterfall");
+
+
+
+		printf("\t\n\nCost included:");
+		printf("\n1)Tickets for bus.");
+		printf("\n2)Dinner/Lunch");
+		printf("\n3)Hotel Booking");
+		printf("\n4)All Visiting Place Entrance Charges");
+		printf("\n5)Guide Service Charge");
+		printf("\n6)Vehicle Service Charge");
+
+
+		printf("\n\nPlease Press '1' for confirmation or press any other key to get back ");
+		scanf("%d",&nam);
+		if(nam==1)
+		{
+		      amount=9999;
+			printf("Confirmed for basic package");
+				}
+				else
+				{
+
+		goto flag;
+	}
+
+	}
+	else if(choice==2)
+	{
+	      system("cls");
+	      mero=2;
+	      //	amounts=11999;
+		printf("\nThings to do in Kathmandu.   \t\tTrip Facts");
+		printf("\n\n1) Visit Boudhanath Stupa  \t\tDuration: 10days");
+		printf("\n2) Visit Swyambhunath Stupa  \t\tGrade: Easy");
+		printf("\n3) Visit Pashupatinath Temple\t\tMaximnum elevation:1400m");
+		printf("\n4) Visit Thamel              \t\tRoute:Ktm-various temples");
+		printf("\n5) Visit Kathmandu Durbar Square");
+		printf("\n6) Visit Shivapuri Nagarjun National Park Hiking");
+	    printf("\n7) Visit Kailashnath Mahadev");
+	    printf("\n8) Visit Dakshinkali Temple");
+
+	    printf("\n9) Visit Naranhiti Palace Museum");
+	    printf("\n10) Visit Jaganath Krishna temple");
+	    printf("\n11) Visit Akash Bhairab Temple");
+	    printf("\n12) Visit White Gumba  ");
+	    printf("\n13) Visit Taudaha Lake");
+	    printf("\n14) Visit Basantapur  ");
+
+	printf("\t\n\nCost included:");
+		printf("\n1)Tickets for plane.");
+		printf("\n2)Dinner/Lunch");
+		printf("\n3)Hotel Booking");
+		printf("\n4)All Visiting Place Entrance Charges");
+		printf("\n5)Guide Service Charge");
+		printf("\n6)Vehicle Service Charge");
+
+		printf("\n\nPlease Press '1' for confirmation or press any other key to get back ");
+		scanf("%d",&kam);
+		if(kam==1)
+		{
+		      amounts=11999;
+			printf("Confirmed for Advance package");
+				}
+				else
+				{
+
+		goto label;
+	}
+
+	}
+	else if(choice == 3)
+     {
+	nepal();
+	 }
+	else{
+		printf("\nPlease Enter choose from 1-3");
+		goto flag;
+	}
+	getch();
+}
+
+void solukhumbu()
+{
+	int choice;
+	int nam,kam;
+
+		       flag:
+		       label:
+			system("cls");
+			heading();
+	printf("\n\n\t\t\t\tSOLUKHUMBU TOUR PACKAGE");
+	printf("\n\n\n\t\t\t 1) Basic Package--5d/14,999\n\t\t\t 2) Advance Package--12d/Rs. 24,999\n\t\t\t 3) Back to Nepal Tour Package");
+	printf("\n\t\t\t Please choose option (1-3)");
+	scanf("%d",&choice);
+	if(choice==1)
+	{
+		system("cls");
+		mero=1;
+	      // amount=14999;
+		printf("\nThings to do in Solukhumbu.   \t\t\tTrip Facts");
+		printf("\n\n1) Visit Tengboche Monastery\t\t\tDuration: 5days");
+		printf("\n2) Visit Gokyo Lakes          \t\t\tGrade: Easy");
+		printf("\n3) Explore khumbu glacier     \t\t\tMaximnum elevation: 3440 m");
+		printf("\n4) Explore Namche Bazar       \t\t\tRoute:Ktm-solukhumbu");
+		printf("\n5) Climb upto Kalapatthar");
+		printf("\n6) Take a tour to chukkung valley");
+		printf("\n7) Visit Thukla pass");
+		printf("\n8) Explore village cheplung");
+		printf("\n9) Visit Sherpa Museum");
+		printf("\t\n\nCost included:");
+		printf("\n\n1)Tickets for bus.");
+		printf("\n2)Dinner/Lunch");
+		printf("\n3)Hotel Booking");
+		printf("\n4)All Visiting Place Entrance Charges");
+		printf("\n5)Guide Service Charge");
+		printf("\n6)Vehicle Service Charge");
+
+		printf("\n\nPlease Press '1' for confirmation or press any other key to get back ");
+		scanf("%d",&nam);
+		if(nam==1)
+		{
+		       amount=14999;
+			printf("Confirmed for basic package");
+				}
+				else
+				{
+
+		goto flag;
+	}
+
+	}
+	else if(choice==2)
+	{       system("cls");
+		mero=2;
+	      //	amount=24999;
+		printf("\nThings to do in Solukhumbu. \t\t\tTrip Facts");
+		printf("\n\n1) Everest Base Camp      \t\t\tDuration: 12days");
+		printf("\n2) Visit Gokyo Lakes        \t\t\tGrade: Easy");
+		printf("\n3) Explore khumbu glacier   \t\t\tMaximnum elevation: 3440 m");
+		printf("\n4) Explore Namche Bazar     \t\t\tRoute:Ktm-lukla airport");
+		printf("\n5) Climb upto Kalapatthar");
+		printf("\n6) Take a tour to chukkung valley");
+		printf("\n7) Visit Thukla pass");
+		printf("\n8) Explore village cheplung");
+		printf("\n9) Visit Sagarmatha National Park Museum");
+		printf("\n10) Hiking Trails(Machhermo)");
+		printf("\n11) Visit Chheplung village  ");
+		printf("\t\n\nCost included:");
+		printf("\n\n1)Tickets for plane.");
+		printf("\n2)Dinner/Lunch");
+		printf("\n3)Hotel Booking");
+		printf("\n4)All Visiting Place Entrance Charges");
+		printf("\n5)Guide Service Charge");
+		printf("\n6)Vehicle Service Charge");
+		printf("\n7)Hiking and trekking equipment charges");
+
+
+		printf("\n\nPlease Press '1' for confirmation or press any other key to get back ");
+		scanf("%d",&kam);
+		if(kam==1)
+		{
+			amounts=24999;
+			printf("Confirmed for Advance package");
+				}
+				else
+				{
+
+		goto label;
+	}
+
+	}
+	else if(choice==3)
+	{
+		nepal();
+	}
+	else{
+		printf("\nPlease Enter choose from 1-3");
+		goto flag;
+	}
+	getch();
+}
+
+void placeinfo()
+{
+  printf("\n1) POKHARA:\n");
+  printf("\tSet at the base of the foothills and surrounded by some of the highest\n\tmountains in the world - Dhaulagiri, Manaslu, and Annapurna I,\n\tPokhara is one of Nepal's most scenic cities.");
+
+  printf("\n2) Mustang:\n");
+  printf("\tThe district is a part of Gandaki Province in northern Nepal,\n\tstraddlesthe Himalayas and extends northward onto the Tibetan Plateau. ");
+
+  printf("\n3) Lumbini:\n");
+  printf("\tSiddhartha Gautama,the Lord Buddha, was born in 623 B.C.\n\tin the famous gardens of Lumbini, which soon became a place of\n\tpilgrimage. ");
+
+  printf("\n4) Chitwan:\n");
+  printf("\tAt the foot of the Himalayas, Chitwan is one of the few remaining\n\tundisturbed vestiges of the 'Terai' region, which formerly extended\n\tover the foothills of India and Nepal. ");
+
+  printf("\n5) Kathmandu:\n");
+  printf("\tKathmandu is the largest city and capital of Nepal and the namesake of\n\tthe Kathmandu Valley.");
+
+  printf("\n6) Solukhumbu:\n");
+  printf("\tSolukhumbu is one of the Eastern-most areas of Nepal and features high\n\taltitutes mountains.");
+  printf("\nPress Enter to get back to main menu");
+  getch();
+  mainmenu();
+
+}
+void aboutus()
+{
+	heading();
+ printf("\n\n\tName of Company        : Travel And Tour Management System\n\n");
+printf("\tBusiness Types         : Trekking, Expeditions, domestic tours,\n\t\t\t\t adventures tours\n\n");
+printf("\tYears of establishment : 2022 Jan 1st\n\n");
+printf("\tAffiliations           : Department of Tourism \n\n");
+printf("\tPartnership Airlines   : Buddha Air, Yeti Airlines, Simrik Airlines,\n\n");
+printf("\tTour Types             : Cultural/ Pilgrimage/ Holiday/ World Heritage\n\t\t\t\t tour packages, Adventures \n\n");
+
+printf("\tLocated at             : Kamalpokhar,Kathmandu (opposite to city centre)\n\n");
+printf("\tPhone Number           : 9813122973(Viber/whatsapp)\n\n");
+printf("\tEmail address          : travelwithhustler@gmail.com\n\n");
+printf("Press Enter to get into main menu");
+
+
+ getch();
+
+mainmenu();
+}
+ void terms()
+ {
+	printf("\n\t\t\tTERMS AND CONDITION\n\n");
+printf("   1. Booking:\n   We prefer to have the confirmed booking in advance prior to the arrival to\n   Kathmandu.");
+
+printf("\n\n   2.Payment:\n   At all the trips you will book with us.And the rest amount can be settle\n   upon arrival in ktm.\n");
+
+printf("\n   3.Cancellation Policy:\n   If we fail to provide you the trip under unexpected situations which\n   is not in our control. we would offer you alternative trip of similar\n   interest\n");
+
+
+
+printf("\n\n   4. Saftey Policy :\n   We always render you most sincere services and we guarantee you that none of\n   our staff will harm or steal your belongings.");
+
+
+printf("\n\n   5. Privacy Policy :\n   Plan Nepal, uses your email and personal details for the purpose of\n   processing your enquiries and operating trip.\n\n");
+ printf("Press Enter for getting back to Main Menu");
+	getch();
+
+	mainmenu();
+
+
+ }
+
+
+
